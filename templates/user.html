@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+    <title> Bem Barato.com {{username}} </title>
+</head>
+
+<body>
+    {% if username %}
+         <h1> Bem vindos ao Bem Barato.com {{username}} </h1>
+    {%else %}
+    <h1> Bem vindos ao Bem Barato.com, anônimo </h1>
+    {%endif%}
+
+    <h5>Nome do cookie {{cokusername}}</h5>
+</body>
+</html>
