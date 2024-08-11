@@ -9,25 +9,40 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route("/sobre")
-def sobre():
-    return "<h1> Bem Barato.com: O Seu Novo Destino para Anúncios e Compras Econômicas </h1>"
+@app.route("/log/cadastro")
+def cadastro():
+    return render_template ('cadastro.html')
+
+@app.route("/log/caduser", methods=['post'])
+def caduser():
+    return request.form
 
 
-@app.route("/sobre/privacidade")
-def privacidade():
-    return "<h4>No Bem Barato.com, a sua privacidade é nossa prioridade. </h4>"
+@app.route("/log/acesso")
+def acesso():
+    return render_template ('acesso.html')
 
-@app.route("/user/<username>")
-def username(username):
-    cok = make_response("<h2>cookie criado</h2>")
-    cok.set_cookie('username', username)
-    return cok
+@app.route("/produtos/categoria")
+def categoria():
+    return render_template ('categoria.html')
 
-@app.route("/user2/")
-@app.route("/user2/<username>")
-def username2(username=None):
-    cokusername = request.cookies.get('username')
-    print(cokusername)
-    return render_template('user.html',username=username, cokusername=cokusername)
+@app.route("/produtos/busca")
+def busca():
+    return render_template ('busca.html')
+
+@app.route("/produtos/anuncio")
+def anuncio():
+    return render_template ('anuncio.html')
+
+@app.route("/produtos/perguntas")
+def perguntas():
+    return render_template ('perguntas.html')
+
+@app.route("/relatorios/compras")
+def relcompras():
+    return render_template ('relcompras.html')
+
+@app.route("/relatorios/vendas")
+def relvendas():
+    return render_template ('relvendas.html')
 
