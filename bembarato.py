@@ -5,16 +5,14 @@ from flask import request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://julianafabricio:Avelino493@localhost:3306/bembarato'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Avelino493@localhost:3306/banco_bembarato'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class pessoa(db.Model):
+class Pessoa(db.Model):
     __tablename__ = "pessoa"
-    id = db.Column('id_usuario', db.Integer, primary_key=True)
+    id = db.Column('id_pessoa', db.Integer, primary_key=True)
     nome = db.Column('nome', db.String(45))
     email = db.Column('email', db.String(45))
     cpf= db.Column('CPF', db.String(45))
@@ -26,6 +24,41 @@ class pessoa(db.Model):
         self.cpf = cpf
         self.telefone = telefone
 
+class Usuario (db.Model):
+    __tablename__ = "usuario"
+    id = db.Column('id_usuario', db.Integer, primary_key=True)
+    login= db.Column('login', db.String(45))
+    senha = db.Column('senha', db.String(45))
+    tipo_usuario= db.Column('tipo_usuario', db.String(45))
+    
+    def __init__(self, login, senha, tipo_usuario):
+        self.login = login
+        self.senha = senha
+        self.tipo_usuario = tipo_usuario
+
+class Categoria (db.Model):
+    __tablename__ = "categoria"
+    id = db.Column('id_usuario', db.Integer, primary_key=True)
+    nome_categoria= db.Column('nome_categoria', db.String(45))
+    
+    def __init__(self, nome_categoria):
+        self.nome_categoria = nome_categoria
+
+class Anuncio (db.Model):
+    __tablename__ = "anuncio"
+    id = db.Column('id_anuncio', db.Integer, primary_key=True)
+    nome_anuncio= db.Column('nome_anuncio', db.String(45))
+    descricao_anuncio= db.Column('descricao_anuncio', db.String(45))
+    valor_anuncio= db.Column('valor_anuncio', db.String(45))
+    data_anuncio= db.Column('data_anuncio', db.String(45))
+
+    def __init__(self, nome_anuncio, descricao_anuncio, valor_anuncio, data_anuncio):
+        self.nome_anuncio = nome_anuncio
+        self.descricao_anuncio = descricao_anuncio
+        self.valor_anuncio = valor_anuncio
+        self.data_anuncio = data_anuncio
+
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -34,7 +67,7 @@ def index():
 def cadastro():
     return render_template ('cadastro.html')
 
-@app.route("/log/caduser", methods=['post'])
+@app.route("/log/caduser", methods=['POST'])
 def caduser():
     return request.form
 
@@ -68,4 +101,5 @@ def relvendas():
     return render_template ('relvendas.html')
 
 if __name__ == 'bembarato':
+    with app.app_context():
         db.create_all()
