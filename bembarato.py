@@ -53,7 +53,6 @@ class Anuncio (db.Model):
     id_categoria= db.Column('id_categoria',db.Integer, db.ForeignKey("categoria.id_categoria"))
     id_pessoa = db.Column('id_pessoa',db.Integer, db.ForeignKey("cadastro.id_pessoa"))
 
-
     def __init__(self, nome_produto, descricao_produto, valor_produto, quantidade, id_categoria, id_pessoa):
         self.nome_produto = nome_produto
         self.descricao_produto = descricao_produto
@@ -187,6 +186,8 @@ def novoanuncio():
     db.session.add(anuncio)
     db.session.commit()
     return redirect(url_for('anuncio'))
+
+
 
 
 @app.route("/produtos/perguntas")
