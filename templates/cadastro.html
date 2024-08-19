@@ -51,6 +51,7 @@
                 <th>Número</th>
                 <th>Bairro</th>
                 <th>Cidade</th>
+                <th>Editar</th>
                 <th>Deletar</th>
             </tr>
         </thead>
@@ -65,8 +66,10 @@
                 <td>{{ pessoa.numero_endereco }}</td>
                 <td>{{ pessoa.bairro }}</td>
                 <td>{{ pessoa.cidade }}</td>
-                <td><a href={{ url_for("editarusuario",id=pessoa.id) }}>Editar?</a></td>
-                <td><a href={{ url_for("deletarusuario",id=pessoa.id) }}>Deletar?</a></td>
+                <td><a href={{ url_for("editarusuario",id_pessoa=pessoa.id_pessoa) }}>Editar?</a></td>
+                <td><a href={{ url_for("deletarusuario",id_pessoa=pessoa.id_pessoa) }}>Deletar?</a></td>
+    
+
                 </td>
             </tr>
             {% endfor %}

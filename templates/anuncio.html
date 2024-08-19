@@ -45,11 +45,12 @@
         <tbody>
             {% for anuncio in anuncios %}
                 <tr>
-                    <td>{{ anuncio.nome }}</td>
-                    <td>{{ anuncio.desc }}</td>
-                    <td>{{ anuncio.qtd }}</td>
-                    <td>{{ anuncio.preco }}</td>
-                    <td>{{ anuncio.cat_id }}</td>
+                    <td>{{ anuncio.nome_produto}}</td>
+                    <td>{{ anuncio.descricao_produto }}</td>
+                    <td>{{ anuncio.valor_produto }}</td>
+                    <td>{{ anuncio.quantidade }}</td>
+                    <td>{{anuncio.id_categoria}}</td>
+                  
                 </tr>
             {% endfor %}
         </tbody>

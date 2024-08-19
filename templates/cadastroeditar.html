@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head> 
+    <title>Bem Barato.com - Edição de Usuários</title>
+</head>
+
+<body>
+    <h4>Edição de Usuários</h4>
+    <form
+
+    <form action="/log/cadastro/editar /{{ pessoa.id_pessoa}}" method="post">
+        <p><label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" value="{{pessoa.nome}}"></p>
+     
+            <p><label for="email">E-mail:</label>
+            <input type="text" id="email" name="email" value="{{pessoa.email}}"></p>
+            
+            <p><label for="cpf">CPF:</label>
+            <input type="text" id="cpf" name="cpf" value="{{pessoa.cpf}}"></p> 
+            
+            <p><label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" name="telefone" value="{{pessoa.telefone}}"></p>
+     
+            <p><label for="endereco">Endereço:</label>
+             <input type="text" id="endereco" name="endereco" value="{{pessoa.endereco}}"></p>
+     
+             <p><label for="numero_endereco">Número:</label>
+             <input type="text" id="numero_endereco" name="numero_endereco" value="{{pessoa.numero_endereco}}"></p>
+     
+             <p><label for="bairro">Bairro:</label>
+             <input type="text" id="bairro" name="bairro" value="{{pessoa.bairro}}"></p>
+     
+             <p><label for="cidade">Cidade:</label>
+             <input type="text" id="cidade" name="cidade" value="{{pessoa.cidade}}"></p>
+       
+        
+        <p><input type="submit" value="Alterar"></p>
+    </form>
+    <a href={{url_for("cadastro")}}> Cancelar</a>
+</body>
+
+</html>

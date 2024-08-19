@@ -49,13 +49,16 @@ class Anuncio (db.Model):
     descricao_produto= db.Column('descricao_produto', db.String(45))
     valor_produto= db.Column('valor_produto', db.String(45))
     quantidade = db.Column('data_anuncio', db.String(45))
- 
+    id_categoria= db.Column('id_categoria',db.Integer, db.ForeignKey("categoria.id_categoria"))
+    id_pessoa = db.Column('id_pessoa',db.Integer, db.ForeignKey("cadastro.id_pessoa"))
 
-    def __init__(self, nome_produto, descricao_produto, valor_produto, quantidade):
+    def __init__(self, nome_produto, descricao_produto, valor_produto, quantidade, id_categoria, id_pessoa):
         self.nome_produto = nome_produto
         self.descricao_produto = descricao_produto
         self.valor_produto = valor_produto
         self.quantidade = quantidade
+        self.id_categoria = id_categoria
+        self.id_pessoa = id_pessoa
        
 
 class Favorito (db.Model):
@@ -119,10 +122,25 @@ def buscarusuario(id_pessoa):
     pessoa = Cadastro.query.get(id_pessoa)
     return pessoa.nome
 
-@app.route("/log/cadastro/editar/<int:id>", methods=['GET','POST'])
+@app.route("/log/cadastro/editar/<int:id_pessoa>", methods=['GET','POST'])
 def editarusuario(id_pessoa):
     pessoa = Cadastro.query.get(id_pessoa)
-    return pessoa.nome
+    if request.method == 'POST':
+        pessoa.nome = request.form.get('nome')
+        pessoa.email = request.form.get('email')
+        pessoa.cpf = request.form.get('cpf')
+        pessoa.telefone = request.form.get('telefone')
+        pessoa.endereco = request.form.get('endereco')
+        pessoa.numero_endereco = request.form.get('numero_endereco')
+        pessoa.bairro = request.form.get('bairro')
+        pessoa.cidade = request.form.get('cidade')
+        db.session.add(pessoa)
+        db.session.commit()
+
+        return redirect(url_for('cadastro'))
+
+    return render_template('cadastroeditar.html', pessoa = pessoa)
+   
 
 @app.route("/log/cadastro/deletar/<int:id_pessoa>", methods=['GET','POST'])
 def deletarusuario(id_pessoa):
@@ -158,6 +176,15 @@ def busca():
 @app.route("/produtos/anuncio")
 def anuncio():
     return render_template ('anuncio.html', anuncios = Anuncio.query.all(), categorias = Categoria.query.all(), )
+
+@app.route("/produtos/anuncio/novo", methods=['POST'])
+def novoanuncio():
+    anuncio = Anuncio(request.form.get('nome_produto'), request.form.get('descricao_produto'),
+                      request.form.get('valor_produto'),request.form.get('quantidade'),request.form.get('id_categoria'))
+        
+    db.session.add(anuncio)
+    db.session.commit()
+    return redirect(url_for('anuncio'))
 
 
 @app.route("/produtos/perguntas")
