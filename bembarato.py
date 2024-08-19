@@ -39,8 +39,11 @@ class Categoria (db.Model):
     id_categoria= db.Column('id_categoria', db.Integer, primary_key=True)
     nome_categoria= db.Column('nome_categoria', db.String(45))
     
+    anuncios = db.relationship('Anuncio', back_populates='categoria')
+    
     def __init__(self, nome_categoria):
         self.nome_categoria = nome_categoria
+    
 
 class Anuncio (db.Model):
     __tablename__ = "anuncio"
@@ -51,6 +54,8 @@ class Anuncio (db.Model):
     quantidade = db.Column('data_anuncio', db.String(45))
     id_categoria= db.Column('id_categoria',db.Integer, db.ForeignKey("categoria.id_categoria"))
     id_pessoa = db.Column('id_pessoa',db.Integer, db.ForeignKey("cadastro.id_pessoa"))
+
+    categoria = db.relationship('Categoria', back_populates='anuncios')
 
     def __init__(self, nome_produto, descricao_produto, valor_produto, quantidade, id_categoria, id_pessoa):
         self.nome_produto = nome_produto
