@@ -7,13 +7,53 @@
 
 <body>
     <h4> Anúncios </h4>
-    <p><a href="{{ url_for('cadastro') }}" class="link">Cadastro</a></p>
-    <p><a href="{{ url_for('acesso') }}">Acesso</a></p>
-    <p><a href="{{ url_for('categoria') }}">Categoria</a></p>
-    <p><a href="{{ url_for('busca') }}">Busca</a></p>
-    <p><a href="{{ url_for('anuncio') }}">Anúncio</a></p>
-    <p><a href="{{ url_for('perguntas') }}">Perguntas</a></p>
-    <p><a href="{{ url_for('relcompras') }}">Relatórios de Compras</a></p>
-    <p><a href="{{ url_for('relvendas') }}">Relatórios de Vendas</a></p>
+    <form action="novoanuncio" method="post">
+        <p><label for="nome_produto">Nome do Produto</label>
+        <input type="text" id="nome_produto" name="nome_produto"></p>
+
+        <p><label for="descricao_produto">Descrição do Produto</label>
+        <textarea rows="4" cols="50" id="descricao_produto" name="descricao_produto"></textarea></p>  
+
+        <p><label for="valor_produto">Valor</label>
+        <input type="text" id="valor_produto" name="valor_produto"></p>
+
+        <p><label for="quantidade">Quantidade</label>
+        <input type="text" id="quantidade" name="quantidade"></p>
+        
+        <p><label for="cat">Categoria</label>
+        <select id="cat" name="cat">
+            {% for categoria in categorias %} 
+                <option value="{{ categoria.id_categoria }}">{{ categoria.nome_categoria }}</option>
+            {% endfor %}
+        </select></p>
+
+        <p><input type="submit" value="Cadastrar"></p>
+    </form>
+
+    <h4>Lista de {{titulo}}</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Quantidade</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for anuncio in anuncios %}
+                <tr>
+                    <td>{{ anuncio.nome }}</td>
+                    <td>{{ anuncio.desc }}</td>
+                    <td>{{ anuncio.qtd }}</td>
+                    <td>{{ anuncio.preco }}</td>
+                    <td>{{ anuncio.cat_id }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
+
 </html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head> 
+    <title>Bem Barato.com - Edição de Usuários</title>
+</head>
+
+<body>
+    <h4>Edição de Usuários</h4>
+    <form
+
+    <form action="/log/editar/{{ cadastro.id_pessoa}}" method="post">
+
+        <p><label for="user">Username</label>
+        <input type="text" id="user" name="user" value="{{usuario.nome}}"></p>
+
+        <p><label for="email">E-mail</label>
+        <input type="text" id="email" name="email" value="{{usuario.email}}"></p>       
+
+        <p><label for="passwd">Password</label>
+        <input type="text" id="passwd" name="passwd" value="{{usuario.senha}}"></p>
+
+        <p><label for="end">Endereco</label>
+        <input type="text" id="end" name="end" value="{{usuario.end}}"></p>
+        
+        <p><input type="submit" value="Alterar"></p>
+    </form>
+    <a href={{url_for("usuario")}}> Cancelar</a>
+</body>
+
+</html>

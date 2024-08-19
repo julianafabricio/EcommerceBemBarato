@@ -12,20 +12,27 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class Pessoa(db.Model):
-    __tablename__ = "pessoa"
+class Cadastro(db.Model):
+    __tablename__ = "cadastro"
     id_pessoa = db.Column('id_pessoa', db.Integer, primary_key=True)
     nome = db.Column('nome', db.String(45))
     email = db.Column('email', db.String(45))
     cpf= db.Column('CPF', db.String(45))
     telefone= db.Column('telefone', db.String(45))
+    endereco= db.Column('endereco', db.String(45))
+    numero_endereco= db.Column('numero_endereco', db.String(45))
+    bairro=db.Column('bairro', db.String(45))
+    cidade= db.Column('cidade', db.String(45))
  
-    def __init__ (self, nome, email, cpf, telefone):
+    def __init__ (self, nome, email, cpf, telefone, endereco, numero_endereco, bairro, cidade):
         self.nome = nome
         self.email = email
         self.cpf = cpf
         self.telefone = telefone
-
+        self.endereco = endereco
+        self.numero_endereco = numero_endereco
+        self.bairro = bairro
+        self.cidade = cidade
 
 class Categoria (db.Model):
     __tablename__ = "categoria"
@@ -38,30 +45,18 @@ class Categoria (db.Model):
 class Anuncio (db.Model):
     __tablename__ = "anuncio"
     id_anuncio = db.Column('id_anuncio', db.Integer, primary_key=True)
-    nome_anuncio= db.Column('nome_anuncio', db.String(45))
-    descricao_anuncio= db.Column('descricao_anuncio', db.String(45))
-    valor_anuncio= db.Column('valor_anuncio', db.String(45))
-    data_anuncio= db.Column('data_anuncio', db.String(45))
-
-    def __init__(self, nome_anuncio, descricao_anuncio, valor_anuncio, data_anuncio):
-        self.nome_anuncio = nome_anuncio
-        self.descricao_anuncio = descricao_anuncio
-        self.valor_anuncio = valor_anuncio
-        self.data_anuncio = data_anuncio
-
-class Produtos (db.Model):
-    __tablename__ = "produto"
-    id_produto= db.Column('id_produto', db.Integer, primary_key=True)
     nome_produto= db.Column('nome_produto', db.String(45))
     descricao_produto= db.Column('descricao_produto', db.String(45))
     valor_produto= db.Column('valor_produto', db.String(45))
-    cnpj_fabricante=db.Column ('cnpj_fabricante', db.String(45))
-    
-    def __init__(self, nome_produto, descricao_produto, valor_produto, cnpj_fabricante):
+    quantidade = db.Column('data_anuncio', db.String(45))
+ 
+
+    def __init__(self, nome_produto, descricao_produto, valor_produto, quantidade):
         self.nome_produto = nome_produto
         self.descricao_produto = descricao_produto
         self.valor_produto = valor_produto
-        self.cnpj_fabricante = cnpj_fabricante
+        self.quantidade = quantidade
+       
 
 class Favorito (db.Model):
     __tablename__ = "favorito"
@@ -69,19 +64,6 @@ class Favorito (db.Model):
     
     def __init__(self):
        pass
-
-class Endereço (db.Model):
-    __tablename__ = "endereco"
-    id_endereco= db.Column('id_endereco', db.Integer, primary_key=True)
-    nome_endereco= db.Column('nome_endereco', db.String(45))
-    numero_endereco= db.Column('numero_endereco', db.String(45))
-    bairro=db.Column('bairro', db.String(45))
-    cidade= db.Column('cidade', db.String(45))
-
-    def __init__(self, nome_endereco, bairro, cidade):
-        self.nome_endereco = nome_endereco
-        self.bairro = bairro
-        self.cidade = cidade
 
 class Pergunta (db.Model):
     __tablename__ = "pergunta"
@@ -121,17 +103,34 @@ def index():
 
 @app.route("/log/cadastro")
 def cadastro():
-       return render_template ('cadastro.html', pessoa=Pessoa.query.all())
+       return render_template ('cadastro.html', pessoas=Cadastro.query.all())
     
 @app.route("/log/caduser", methods=['POST'])
 def caduser():
-    pessoa= Pessoa (request.form.get('nome'), request.form.get('email'), 
-                                  request.form.get('cpf'), request.form.get ('telefone'))
-    db.session.add(pessoa)
+    pessoas= Cadastro (request.form.get('nome'), request.form.get('email'), 
+                                  request.form.get('cpf'), request.form.get ('telefone'),
+                                  request.form.get('endereco'), request.form.get('numero_endereco'), request.form.get('bairro'), request.form.get('cidade'))
+    db.session.add(pessoas)
     db.session.commit()
-    print("cadastro realizado com sucesso")
     return redirect(url_for('cadastro'))
-   
+
+@app.route("/log/cadastro/detalhar/<int:id_pessoa>")
+def buscarusuario(id_pessoa):
+    pessoa = Cadastro.query.get(id_pessoa)
+    return pessoa.nome
+
+@app.route("/log/cadastro/editar/<int:id>", methods=['GET','POST'])
+def editarusuario(id_pessoa):
+    pessoa = Cadastro.query.get(id_pessoa)
+    return pessoa.nome
+
+@app.route("/log/cadastro/deletar/<int:id_pessoa>", methods=['GET','POST'])
+def deletarusuario(id_pessoa):
+    pessoa = Cadastro.query.get(id_pessoa)
+    db.session.delete(pessoa)
+    db.session.commit()
+    return redirect(url_for('cadastro'))
+
 @app.route("/log/acesso")
 def acesso():
     return render_template ('acesso.html')
@@ -140,13 +139,26 @@ def acesso():
 def categoria():
     return render_template ('categoria.html')
 
+@app.route("/produtos/categoria/eletronicos")
+def eletronicos():
+    return render_template('eletronicos.html')
+                           
+@app.route("/produtos/categoria/casaedecoracao")
+def casaedecoracao():
+    return render_template('casaedecoracao.html')
+
+@app.route("/produtos/categoria/camaebanho")
+def camaebanho():
+    return render_template('camaebanho.html')
+
 @app.route("/produtos/busca")
 def busca():
     return render_template ('busca.html')
 
 @app.route("/produtos/anuncio")
 def anuncio():
-    return render_template ('anuncio.html')
+    return render_template ('anuncio.html', anuncios = Anuncio.query.all(), categorias = Categoria.query.all(), )
+
 
 @app.route("/produtos/perguntas")
 def perguntas():

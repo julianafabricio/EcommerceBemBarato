@@ -1,67 +1,76 @@
 <!DOCTYPE html>
-
 <html> 
 <head> 
-    <title> Bem Barato.com - Cadastro de Usuários</title>
+    <title>Bem Barato.com - Cadastro de Usuários</title>
 </head>
 
-
 <body>
-    <h4> Cadastro de Usuários - Bem Barato.com</h4>
+    <h4>Cadastro de Usuários - Bem Barato.com</h4>
 
-    <body>
-        <h4> Cadastro</h4>
-        <p><a href="{{ url_for('cadastro') }}" class="link">Cadastro</a>
-        <a href="{{ url_for('acesso') }}">Acesso</a>
-        <a href="{{ url_for('categoria') }}">Categoria</a></p>
-        <a href="{{ url_for('busca') }}">Busca</a>
-        <p><a href="{{ url_for('anuncio') }}">Anúncio</a></p>
-        <p><a href="{{ url_for('perguntas') }}">Perguntas</a></p>
-        <p><a href="{{ url_for('relcompras') }}">Relatórios de Compras</a></p>
-        <p><a href="{{ url_for('relvendas') }}">Relatórios de Vendas</a></p>
+    <h4>Cadastro Usuário</h4>
 
     <form action="caduser" method="post">
        <p><label for="nome">Nome:</label>
-       <input type"text" id="nome" name="nome"></p>
+       <input type="text" id="nome" name="nome"></p>
 
        <p><label for="email">E-mail:</label>
-       <input type"text" id="email" name="email"></p>
+       <input type="text" id="email" name="email"></p>
        
        <p><label for="cpf">CPF:</label>
-       <input type"text" id="cpf" name="cpf"></p> 
+       <input type="text" id="cpf" name="cpf"></p> 
        
        <p><label for="telefone">Telefone:</label>
-       <input type"text" id="telefone" name="telefone"></p>
+       <input type="text" id="telefone" name="telefone"></p>
 
-     <button type="submit" [disabled]="!form.form.valid">
-        Cadastrar
-     </button>
+       <p><label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco"></p>
 
-     <h4> Lista de Usuários</h4>
-     <table>
+        <p><label for="numero_endereco">Número:</label>
+        <input type="text" id="numero_endereco" name="numero_endereco"></p>
+
+        <p><label for="bairro">Bairro:</label>
+        <input type="text" id="bairro" name="bairro"></p>
+
+        <p><label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade"></p>
+
+        <button type="submit">
+            Cadastrar
+        </button>
+    </form>
+
+    <h4>Lista de Usuários</h4>
+    <table>
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>Email</th>
                 <th>CPF</th>
                 <th>Telefone</th>
+                <th>Endereço</th>
+                <th>Número</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>Deletar</th>
             </tr>
         </thead>
-        <body>
-            {% for pessoa in pessoa %}
+        <tbody>
+            {% for pessoa in pessoas %}
             <tr>
-                <td>{{pessoa.nome}}</td>
-                <td>{{pessoa.email}}</td>
-                <td>{{pessoa.cpf}}</td>
-                <td>{{pessoa.telefone}}</td>
+                <td>{{ pessoa.nome }}</td>
+                <td>{{ pessoa.email }}</td>
+                <td>{{ pessoa.cpf }}</td>
+                <td>{{ pessoa.telefone }}</td>
+                <td>{{ pessoa.endereco }}</td>
+                <td>{{ pessoa.numero_endereco }}</td>
+                <td>{{ pessoa.bairro }}</td>
+                <td>{{ pessoa.cidade }}</td>
+                <td><a href={{ url_for("editarusuario",id=pessoa.id) }}>Editar?</a></td>
+                <td><a href={{ url_for("deletarusuario",id=pessoa.id) }}>Deletar?</a></td>
+                </td>
             </tr>
             {% endfor %}
-        </body>
-     </table>
-
-
-
-    </form>
-
+        </tbody>
+    </table>
 </body>
 </html>
