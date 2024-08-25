@@ -34,7 +34,8 @@
         <p><label for="cidade">Cidade:</label>
         <input type="text" id="cidade" name="cidade"></p>
 
-        <p></p>
+        <p><label for="senha">Senha:</label>
+        <input type="text" id="senha" name="senha"></p>
 
 
 
@@ -55,6 +56,7 @@
                 <th>Número</th>
                 <th>Bairro</th>
                 <th>Cidade</th>
+                <th>Senha</th>
                 <th>Editar</th>
                 <th>Deletar</th>
             </tr>
@@ -70,6 +72,7 @@
                 <td>{{ pessoa.numero_endereco }}</td>
                 <td>{{ pessoa.bairro }}</td>
                 <td>{{ pessoa.cidade }}</td>
+                <td>{{ pessoa.senha }}</td>
                 <td><a href={{ url_for("editarusuario",id_pessoa=pessoa.id_pessoa) }}>Editar?</a></td>
                 <td><a href={{ url_for("deletarusuario",id_pessoa=pessoa.id_pessoa) }}>Deletar?</a></td>
     

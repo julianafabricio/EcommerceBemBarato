@@ -5,6 +5,10 @@ from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from flask import url_for
 from flask import redirect
+from flask_login import (current_user, LoginManager,
+                             login_user, logout_user,
+                             login_required)
+import hashlib
 
 
 app = Flask(__name__)
@@ -12,6 +16,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Avelino493@localhost:3306/
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+app.secret_key = 'cavalo come arroz integral'
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 class Cadastro(db.Model):
     __tablename__ = "cadastro"
@@ -24,8 +33,9 @@ class Cadastro(db.Model):
     numero_endereco= db.Column('numero_endereco', db.String(45))
     bairro=db.Column('bairro', db.String(45))
     cidade= db.Column('cidade', db.String(45))
+    senha= db.Column ('senha', db.String(256))
  
-    def __init__ (self, nome, email, cpf, telefone, endereco, numero_endereco, bairro, cidade):
+    def __init__ (self, nome, email, cpf, telefone, endereco, numero_endereco, bairro, cidade,senha):
         self.nome = nome
         self.email = email
         self.cpf = cpf
@@ -34,6 +44,19 @@ class Cadastro(db.Model):
         self.numero_endereco = numero_endereco
         self.bairro = bairro
         self.cidade = cidade
+        self.senha = senha
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id_pessoa)
 
 class Categoria (db.Model):
     __tablename__ = "categoria"
@@ -103,6 +126,30 @@ class Compra (db.Model):
 def paginanaoencontrada(error):
     return render_template('pagnaoencontrada.html')
 
+@login_manager.user_loader
+def load_user(id_pessoa):
+    return Cadastro.query.get(id_pessoa)
+
+@app.route("/login", methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        senha = hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest()
+
+        user = Cadastro.query.filter_by(email=email, senha=senha).first()
+
+        if user:
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -113,19 +160,23 @@ def cadastro():
     
 @app.route("/log/caduser", methods=['POST'])
 def caduser():
+    hash = hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest()
     pessoas= Cadastro (request.form.get('nome'), request.form.get('email'), 
                                   request.form.get('cpf'), request.form.get ('telefone'),
-                                  request.form.get('endereco'), request.form.get('numero_endereco'), request.form.get('bairro'), request.form.get('cidade'))
+                                  request.form.get('endereco'), request.form.get('numero_endereco'), request.form.get('bairro'),
+                                    request.form.get('cidade'), hash)
     db.session.add(pessoas)
     db.session.commit()
     return redirect(url_for('cadastro'))
 
 @app.route("/log/cadastro/detalhar/<int:id_pessoa>")
+@login_required
 def buscarusuario(id_pessoa):
     pessoa = Cadastro.query.get(id_pessoa)
     return pessoa.nome
 
 @app.route("/log/cadastro/editar/<int:id_pessoa>", methods=['GET','POST'])
+@login_required
 def editarusuario(id_pessoa):
     pessoa = Cadastro.query.get(id_pessoa)
     if request.method == 'POST':
@@ -137,6 +188,7 @@ def editarusuario(id_pessoa):
         pessoa.numero_endereco = request.form.get('numero_endereco')
         pessoa.bairro = request.form.get('bairro')
         pessoa.cidade = request.form.get('cidade')
+        pessoa.senha = hashlib.sha512(str(request.form.get('senha')).encode("utf-8")).hexdigest()
         db.session.add(pessoa)
         db.session.commit()
 
@@ -146,6 +198,7 @@ def editarusuario(id_pessoa):
    
 
 @app.route("/log/cadastro/deletar/<int:id_pessoa>", methods=['GET','POST'])
+@login_required
 def deletarusuario(id_pessoa):
     pessoa = Cadastro.query.get(id_pessoa)
     db.session.delete(pessoa)
@@ -174,6 +227,7 @@ def anuncio():
     return render_template ('anuncio.html', anuncios = Anuncio.query.all(), categorias = Categoria.query.all() )
 
 @app.route("/produtos/novoanuncio", methods=['POST'])
+@login_required
 def novoanuncio():
     anuncio = Anuncio(request.form.get('nome_produto'), request.form.get('descricao_produto'),
                       request.form.get('valor_produto'),request.form.get('quantidade'),request.form.get('cat'))
@@ -183,6 +237,7 @@ def novoanuncio():
     return redirect(url_for('anuncio'))
 
 @app.route("/produtos/anuncio/detalhar/<int:id_anuncio>", methods=['GET','POST'])
+@login_required
 def buscaranuncio(id_anuncio):
     anuncio = Anuncio.query.get(id_anuncio)
     if anuncio is None:
@@ -190,6 +245,7 @@ def buscaranuncio(id_anuncio):
     return anuncio.nome_produto
 
 @app.route("/produtos/anuncio/editar/<int:id_anuncio>", methods=['GET','POST'])
+@login_required
 def editaranuncio (id_anuncio):
     anuncio = Anuncio.query.get(id_anuncio)
     if request.method == 'POST':
@@ -207,6 +263,7 @@ def editaranuncio (id_anuncio):
 
 
 @app.route("/produtos/anuncio/deletar/<int:id_anuncio>", methods=['GET','POST'])
+@login_required
 def deletaranuncio (id_anuncio):
     anuncio = Anuncio.query.get(id_anuncio)
     db.session.delete(anuncio)
