@@ -17,15 +17,13 @@
         <p><label for="valor_produto">Valor</label>
         <input type="text" id="valor_produto" name="valor_produto"></p>
 
-        <p><label for="quantidade">Quantidade</label>
-        <input type="text" id="quantidade" name="quantidade"></p>
-        
         <p><label for="cat">Categoria</label>
-        <select id="cat" name="cat">
-            {% for categoria in categorias %} 
-                <option value="{{ categoria.id_categoria }}">{{ categoria.nome_categoria }}</option>
-            {% endfor %}
-        </select></p>
+            <select id="cat" name="cat">
+                {% for categoria in categorias %} 
+                    <option value="{{ categoria.id_categoria }}">{{ categoria.nome_categoria }}</option>
+                {% endfor %}
+            </select></p>
+        
 
         <p><input type="submit" value="Cadastrar"></p>
     </form>
@@ -39,17 +37,21 @@
                 <th>Valor</th>
                 <th>Quantidade</th>
                 <th>Categoria</th>
+        
             </tr>
         </thead>
         
         <tbody>
             {% for anuncio in anuncios %}
                 <tr>
-                    <td>{{ anuncio.nome_produto}}</td>
-                    <td>{{ anuncio.descricao_produto }}</td>
-                    <td>{{ anuncio.valor_produto }}</td>
-                    <td>{{ anuncio.quantidade }}</td>
+                    <td>{{anuncio.nome_produto}}</td>
+                    <td>{{anuncio.descricao_produto }}</td>
+                    <td>{{anuncio.valor_produto }}</td>
+                    <td>{{anuncio.quantidade }}</td>
                     <td>{{anuncio.id_categoria}}</td>
+                    <td><a href={{ url_for("editaranuncio",id_anuncio=anuncio.id_anuncio) }}>Editar?</a></td>
+                    <td><a href={{ url_for("deletaranuncio",id_anuncio=anuncio.id_anuncio) }}>Deletar?</a></td>
+                  
                   
                 </tr>
             {% endfor %}

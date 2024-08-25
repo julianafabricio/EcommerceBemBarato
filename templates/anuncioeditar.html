@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bem Barato.com - Edição de Anúncios</title>
+</head>
+<body>
+    <h4>Edição de Anúncios</h4>
+    
+    <form action="/produtos/anuncio/editar/{{ anuncio.id_anuncio }}" method="post">
+        <p> 
+            <label for="nome_produto">Nome do Produto</label>
+            <input type="text" id="nome_produto" name="nome_produto" value="{{anuncio.nome_produto }}">
+        </p>
+
+        <p>
+            <label for="descricao_produto">Descrição do Produto</label>
+            <textarea rows="4" cols="50" id="descricao_produto" name="descricao_produto" value="{{anuncio.descricao_produto}}"></textarea> 
+        </p>
+
+        <p>
+            <label for="valor_produto">Valor</label>
+            <input type="text" id="valor_produto" name="valor_produto" value="{{ anuncio.valor_produto }}">
+        </p>
+
+        <p>
+            <label for="quantidade">Quantidade</label>
+            <input type="text" id="quantidade" name="quantidade" value="{{ anuncio.quantidade }}">
+        </p>
+
+        <p><label for="cat">Categoria</label>
+        <select id="cat" name="cat">
+            {% for categoria in categorias %} 
+                <option value="{{ categoria.id_categoria }}">{{ categoria.nome_categoria }}</option>
+            {% endfor %}
+        </select></p>
+
+        <p>
+            <input type="submit" value="Alterar">
+        </p>
+    </form>
+    <a href="{{ url_for('anuncio') }}">Cancelar</a>
+
+</body>
+</html>
