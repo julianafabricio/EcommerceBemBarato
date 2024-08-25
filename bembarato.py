@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import url_for
 from flask import redirect
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Avelino493@localhost:3306/banco_bembarato'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -97,7 +98,11 @@ class Compra (db.Model):
         self.valor_compra = valor_compra
         self.data_compra = data_compra
         self.quantidade = quantidade
-        
+
+@app.errorhandler(404)
+def paginanaoencontrada(error):
+    return render_template('pagnaoencontrada.html')
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -147,10 +152,6 @@ def deletarusuario(id_pessoa):
     db.session.commit()
     return redirect(url_for('cadastro'))
 
-@app.route("/log/acesso")
-def acesso():
-    return render_template ('acesso.html')
-
 @app.route("/produtos/categoria")
 def categoria():
     return render_template ('categoria.html')
@@ -167,9 +168,6 @@ def casaedecoracao():
 def camaebanho():
     return render_template('camaebanho.html')
 
-@app.route("/produtos/busca")
-def busca():
-    return render_template ('busca.html')
 
 @app.route("/produtos/anuncio")
 def anuncio():
