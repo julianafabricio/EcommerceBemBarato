@@ -2,43 +2,67 @@
 <html>
 <head> 
     <title>Bem Barato.com - Edição de Usuários</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
 </head>
 
 <body>
-    <h4>Edição de Usuários</h4>
+        <div class="container">
+            <div class="page-header">
+                 <h4>Edição de Usuário</h4>
+            </div>
 
-    <form action="/log/cadastro/editar/{{pessoa.id_pessoa}}"method="post">
-        <p><label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" value="{{pessoa.nome}}"></p>
-     
-            <p><label for="email">E-mail:</label>
-            <input type="text" id="email" name="email" value="{{pessoa.email}}"></p>
-            
-            <p><label for="cpf">CPF:</label>
-            <input type="text" id="cpf" name="cpf" value="{{pessoa.cpf}}"></p> 
-            
-            <p><label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" value="{{pessoa.telefone}}"></p>
-     
-            <p><label for="endereco">Endereço:</label>
-             <input type="text" id="endereco" name="endereco" value="{{pessoa.endereco}}"></p>
-     
-             <p><label for="numero_endereco">Número:</label>
-             <input type="text" id="numero_endereco" name="numero_endereco" value="{{pessoa.numero_endereco}}"></p>
-     
-             <p><label for="bairro">Bairro:</label>
-             <input type="text" id="bairro" name="bairro" value="{{pessoa.bairro}}"></p>
-     
-             <p><label for="cidade">Cidade:</label>
-             <input type="text" id="cidade" name="cidade" value="{{pessoa.cidade}}"></p>
+            <form action="/log/cadastro/editar/{{pessoa.id_pessoa}}"method="post">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" class="form-control" id="nome" name="nome" value="{{pessoa.nome}}"></p>
+                </div>
 
-             <p><label for="senha">Senha:</label>
-            <input type="text" id="senha" name="senha" value="{{pessoa.senha}}"></p>
-       
-        
-        <p><input type="submit" value="Alterar"></p>
-    </form>
-    <a href={{url_for("cadastro")}}> Cancelar</a>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="text" class="form-control"  id="email" name="email" value="{{pessoa.email}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" class="form-control"  id="cpf" name="cpf" value="{{pessoa.cpf}}">
+                 </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="text" class="form-control"  id="telefone" name="telefone" value="{{pessoa.telefone}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" class="form-control" id="endereco" name="endereco" value="{{pessoa.endereco}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="numero_endereco">Número:</label>
+                    <input type="text" class="form-control"  id="numero_endereco" name="numero_endereco" value="{{pessoa.numero_endereco}}">
+                 </div>
+
+                <div class="form-group">
+                    <label for="bairro">Bairro:</label>
+                    <input type="text" class="form-control"  id="bairro" name="bairro" value="{{pessoa.bairro}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" class="form-control"  id="cidade" name="cidade" value="{{pessoa.cidade}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="text" class="form-control"  id="senha" name="senha" value="{{pessoa.senha}}">
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Editar</button>
+            
+                </div>
+            </form>
+            
 </body>
 
 </html>

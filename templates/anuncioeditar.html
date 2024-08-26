@@ -2,43 +2,50 @@
 <html>
 <head>
     <title>Bem Barato.com - Edição de Anúncios</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
 </head>
+
 <body>
-    <h4>Edição de Anúncios</h4>
+    <div class="container">
+        <div class="page-header">
+             <h4>Edição de Anúncios</h4>
+        </div>
     
-    <form action="/produtos/anuncio/editar/{{ anuncio.id_anuncio }}" method="post">
-        <p> 
-            <label for="nome_produto">Nome do Produto</label>
-            <input type="text" id="nome_produto" name="nome_produto" value="{{anuncio.nome_produto }}">
-        </p>
+        <form action="/produtos/anuncio/editar/{{ anuncio.id_anuncio }}" method="post">
+            <div class="form-group">
+                <label for="nome_produto">Nome do Produto</label>
+                <input type="text" class="form-control" id="nome_produto" name="nome_produto" value="{{anuncio.nome_produto }}">
+            </div>
 
-        <p>
-            <label for="descricao_produto">Descrição do Produto</label>
-            <textarea rows="4" cols="50" id="descricao_produto" name="descricao_produto" value="{{anuncio.descricao_produto}}"></textarea> 
-        </p>
+            <div class="form-group">
+                <label for="descricao_produto">Descrição do Produto</label>
+                <textarea rows="4" cols="50" class="form-control" id="descricao_produto" name="descricao_produto" value="{{anuncio.descricao_produto}}"></textarea> 
+            </div>
 
-        <p>
-            <label for="valor_produto">Valor</label>
-            <input type="text" id="valor_produto" name="valor_produto" value="{{ anuncio.valor_produto }}">
-        </p>
+            <div class="form-group">
+                <label for="valor_produto">Valor</label>
+                <input type="text" class="form-control" id="valor_produto" name="valor_produto" value="{{ anuncio.valor_produto }}">
+            </div>
 
-        <p>
-            <label for="quantidade">Quantidade</label>
-            <input type="text" id="quantidade" name="quantidade" value="{{ anuncio.quantidade }}">
-        </p>
+            <div class="form-group">
+                <label for="quantidade">Quantidade</label>
+                <input type="text" class="form-control" id="quantidade" name="quantidade" value="{{ anuncio.quantidade }}">
+            </div>
 
-        <p><label for="cat">Categoria</label>
-        <select id="cat" name="cat">
-            {% for categoria in categorias %} 
-                <option value="{{ categoria.id_categoria }}">{{ categoria.nome_categoria }}</option>
-            {% endfor %}
-        </select></p>
+            <div class="form-group">
+                <label for="cat">Categoria</label>
+                 <select class="form-control" id="cat" name="cat">
+                {% for categoria in categorias %} 
+                    <option value="{{ categoria.id_categoria }}">{{ categoria.nome_categoria }}</option>
+                {% endfor %}
+                </select></p>
+            </div>
 
-        <p>
-            <input type="submit" value="Alterar">
-        </p>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Editar</button>
+                <button href="{{ url_for('anuncio') }}" type="submit" class="btn btn-primary">Cancelar</button>
+            </div>
     </form>
-    <a href="{{ url_for('anuncio') }}">Cancelar</a>
 
 </body>
 </html>
